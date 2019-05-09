@@ -8,14 +8,7 @@ namespace HockeyStats
 	{
 		static readonly double HomeGoalsAverage = 3.075;
 		static readonly double AwayGoalsAverage = 2.785;
-		static readonly int trials = 10;
-
-		static int shutouts = 0;
-
-		static double atlanticPointsToWin = 0;
-		static double metropolitanPointsToWin = 0;
-		static double pacificPointsToWin = 0;
-		static double centralPointsToWin = 0;
+		static readonly int Year = 2018;
 
 		public static void Main(string[] args)
 		{
@@ -75,267 +68,182 @@ namespace HockeyStats
 				new Team("Chicago Blackhawks", 0.936, 0.973, 0.962, 1.135)
 			};
 			#endregion
-			for (int counter = 0; counter < trials; counter++)
+			#region Season Schedule
+			// Loop through each team in division to playe home games - Total 41 games
+			for (int i = 0; i < atlanticDivision.Count; i++)
 			{
-				#region Season Schedule
-				// Loop through each team in division to playe home games - Total 41 games
-				for (int i = 0; i < atlanticDivision.Count; i++)
+				// Play each team in the division twice - 14 games
+				for (int j = 0; j < atlanticDivision.Count; j++)
 				{
-					// Play each team in the division twice - 14 games
-					for (int j = 0; j < atlanticDivision.Count; j++)
+					if (i == j)
 					{
-						if (i == j)
-						{
-							continue;
-						}
-
-						PlayGames(atlanticDivision[i], atlanticDivision[j]);
-						PlayGames(atlanticDivision[i], atlanticDivision[j]);
+						continue;
 					}
 
-					// Play every team in other division of the same conference - 12 games
-					for (int j = 0; j < metropolitanDivision.Count; j++)
+					PlayGames(atlanticDivision[i], atlanticDivision[j]);
+					PlayGames(atlanticDivision[i], atlanticDivision[j]);
+				}
+
+				// Play every team in other division of the same conference - 12 games
+				for (int j = 0; j < metropolitanDivision.Count; j++)
+				{
+					if (i % 2 == 0 && j % 2 == 0)
 					{
-						if (i % 2 == 0 && j % 2 == 0)
-						{
-							PlayGames(atlanticDivision[i], metropolitanDivision[j]);
-						}
-						else if (i % 2 == 1 && j % 2 == 1)
-						{
-							PlayGames(atlanticDivision[i], metropolitanDivision[j]);
-						}
 						PlayGames(atlanticDivision[i], metropolitanDivision[j]);
 					}
-
-					// Play every team in first division of the other conference - 8 games
-					for (int j = 0; j < pacificDivision.Count; j++)
+					else if (i % 2 == 1 && j % 2 == 1)
 					{
-						PlayGames(atlanticDivision[i], pacificDivision[j]);
+						PlayGames(atlanticDivision[i], metropolitanDivision[j]);
 					}
-
-					// Play every team in second division of the other conference - 7 games
-					for (int j = 0; j < centralDivision.Count; j++)
-					{
-						PlayGames(atlanticDivision[i], centralDivision[j]);
-					}
+					PlayGames(atlanticDivision[i], metropolitanDivision[j]);
 				}
 
-				// Loop through each team in division to playe home games - Total 41 games
-				for (int i = 0; i < metropolitanDivision.Count; i++)
+				// Play every team in first division of the other conference - 8 games
+				for (int j = 0; j < pacificDivision.Count; j++)
 				{
-					// Play each team in the division twice - 14 games
-					for (int j = 0; j < metropolitanDivision.Count; j++)
-					{
-						if (i == j)
-						{
-							continue;
-						}
+					PlayGames(atlanticDivision[i], pacificDivision[j]);
+				}
 
-						PlayGames(metropolitanDivision[i], metropolitanDivision[j]);
-						PlayGames(metropolitanDivision[i], metropolitanDivision[j]);
+				// Play every team in second division of the other conference - 7 games
+				for (int j = 0; j < centralDivision.Count; j++)
+				{
+					PlayGames(atlanticDivision[i], centralDivision[j]);
+				}
+			}
+
+			// Loop through each team in division to playe home games - Total 41 games
+			for (int i = 0; i < metropolitanDivision.Count; i++)
+			{
+				// Play each team in the division twice - 14 games
+				for (int j = 0; j < metropolitanDivision.Count; j++)
+				{
+					if (i == j)
+					{
+						continue;
 					}
 
-					// Play every team in other division of the same conference - 12 games
-					for (int k = 0; k < atlanticDivision.Count; k++)
+					PlayGames(metropolitanDivision[i], metropolitanDivision[j]);
+					PlayGames(metropolitanDivision[i], metropolitanDivision[j]);
+				}
+
+				// Play every team in other division of the same conference - 12 games
+				for (int k = 0; k < atlanticDivision.Count; k++)
+				{
+					if (i % 2 == 0 && k % 2 == 0)
 					{
-						if (i % 2 == 0 && k % 2 == 0)
-						{
-							PlayGames(metropolitanDivision[i], atlanticDivision[k]);
-						}
-						else if (i % 2 == 1 && k % 2 == 1)
-						{
-							PlayGames(metropolitanDivision[i], atlanticDivision[k]);
-						}
 						PlayGames(metropolitanDivision[i], atlanticDivision[k]);
 					}
-
-					// Play every team in first division of the other conference - 8 games
-					for (int m = 0; m < pacificDivision.Count; m++)
+					else if (i % 2 == 1 && k % 2 == 1)
 					{
-						PlayGames(metropolitanDivision[i], pacificDivision[m]);
+						PlayGames(metropolitanDivision[i], atlanticDivision[k]);
 					}
-
-					// Play every team in second division of the other conference - 7 games
-					for (int n = 0; n < centralDivision.Count; n++)
-					{
-						PlayGames(metropolitanDivision[i], centralDivision[n]);
-					}
+					PlayGames(metropolitanDivision[i], atlanticDivision[k]);
 				}
 
-				// Loop through each team in division to playe home games - Total 41 games
-				for (int i = 0; i < pacificDivision.Count; i++)
+				// Play every team in first division of the other conference - 8 games
+				for (int m = 0; m < pacificDivision.Count; m++)
 				{
-					// Play each team in the division twice - 14 games
-					for (int j = 0; j < pacificDivision.Count; j++)
-					{
-						if (i == j)
-						{
-							continue;
-						}
+					PlayGames(metropolitanDivision[i], pacificDivision[m]);
+				}
 
-						PlayGames(pacificDivision[i], pacificDivision[j]);
-						PlayGames(pacificDivision[i], pacificDivision[j]);
+				// Play every team in second division of the other conference - 7 games
+				for (int n = 0; n < centralDivision.Count; n++)
+				{
+					PlayGames(metropolitanDivision[i], centralDivision[n]);
+				}
+			}
+
+			// Loop through each team in division to playe home games - Total 41 games
+			for (int i = 0; i < pacificDivision.Count; i++)
+			{
+				// Play each team in the division twice - 14 games
+				for (int j = 0; j < pacificDivision.Count; j++)
+				{
+					if (i == j)
+					{
+						continue;
 					}
 
-					if (i % 2 == 1)
+					PlayGames(pacificDivision[i], pacificDivision[j]);
+					PlayGames(pacificDivision[i], pacificDivision[j]);
+				}
+
+				if (i % 2 == 1)
+				{
+					PlayGames(pacificDivision[i], pacificDivision[(i + 2) % pacificDivision.Count]);
+				}
+
+				// Play every team in other division of the same conference - 8 games
+				for (int k = 0; k < centralDivision.Count; k++)
+				{
+					if (i % 2 == 1 && k % 2 == 1)
 					{
-						PlayGames(pacificDivision[i], pacificDivision[(i + 2) % pacificDivision.Count]);
+						PlayGames(pacificDivision[i], centralDivision[k]);
 					}
-
-					// Play every team in other division of the same conference - 8 games
-					for (int k = 0; k < centralDivision.Count; k++)
+					else if (i % 2 == 0 && k % 2 == 0)
 					{
-						if (i % 2 == 1 && k % 2 == 1)
-						{
-							PlayGames(pacificDivision[i], centralDivision[k]);
-						}
-						else if (i % 2 == 0 && k % 2 == 0)
-						{
-							PlayGames(pacificDivision[i], centralDivision[k]);
-						}
-
 						PlayGames(pacificDivision[i], centralDivision[k]);
 					}
 
-					// Play every team in both divisions of the other conference - 16 games
-					for (int m = 0; m < atlanticDivision.Count; m++)
-					{
-						PlayGames(pacificDivision[i], atlanticDivision[m]);
-						PlayGames(pacificDivision[i], metropolitanDivision[m]);
-					}
+					PlayGames(pacificDivision[i], centralDivision[k]);
 				}
 
-				// Loop through each team in division to playe home games - Total 41 games
-				for (int i = 0; i < centralDivision.Count; i++)
+				// Play every team in both divisions of the other conference - 16 games
+				for (int m = 0; m < atlanticDivision.Count; m++)
 				{
-					// Play each team in the division twice - 14 games
-					for (int j = 0; j < centralDivision.Count; j++)
-					{
-						if (i == j)
-						{
-							continue;
-						}
+					PlayGames(pacificDivision[i], atlanticDivision[m]);
+					PlayGames(pacificDivision[i], metropolitanDivision[m]);
+				}
+			}
 
-						PlayGames(centralDivision[i], centralDivision[j]);
-						PlayGames(centralDivision[i], centralDivision[j]);
+			// Loop through each team in division to playe home games - Total 41 games
+			for (int i = 0; i < centralDivision.Count; i++)
+			{
+				// Play each team in the division twice - 14 games
+				for (int j = 0; j < centralDivision.Count; j++)
+				{
+					if (i == j)
+					{
+						continue;
 					}
 
-					PlayGames(centralDivision[i], centralDivision[(i + 1) % centralDivision.Count]);
+					PlayGames(centralDivision[i], centralDivision[j]);
+					PlayGames(centralDivision[i], centralDivision[j]);
+				}
 
-					// Play every team in other division of the same conference - 8 games
-					for (int k = 0; k < pacificDivision.Count; k++)
+				PlayGames(centralDivision[i], centralDivision[(i + 1) % centralDivision.Count]);
+
+				// Play every team in other division of the same conference - 8 games
+				for (int k = 0; k < pacificDivision.Count; k++)
+				{
+					if (i % 2 == 1 && k % 2 == 1)
 					{
-						if (i % 2 == 1 && k % 2 == 1)
-						{
-							PlayGames(centralDivision[i], pacificDivision[k]);
-						}
-						else if (i % 2 == 0 && k % 2 == 0)
-						{
-							PlayGames(centralDivision[i], pacificDivision[k]);
-						}
-
+						PlayGames(centralDivision[i], pacificDivision[k]);
+					}
+					else if (i % 2 == 0 && k % 2 == 0)
+					{
 						PlayGames(centralDivision[i], pacificDivision[k]);
 					}
 
-					// Play every team in both divisions of the other conference - 16 games
-					for (int m = 0; m < metropolitanDivision.Count; m++)
-					{
-						PlayGames(centralDivision[i], atlanticDivision[m]);
-						PlayGames(centralDivision[i], metropolitanDivision[m]);
-					}
+					PlayGames(centralDivision[i], pacificDivision[k]);
 				}
-				#endregion
 
-				// Sort division by total points
-				atlanticDivision.Sort((y, x) => x.Points.CompareTo(y.Points));
-				metropolitanDivision.Sort((y, x) => x.Points.CompareTo(y.Points));
-				pacificDivision.Sort((y, x) => x.Points.CompareTo(y.Points));
-				centralDivision.Sort((y, x) => x.Points.CompareTo(y.Points));
-
-				//
-				RecordResults(atlanticDivision, ref atlanticPointsToWin);
-				RecordResults(metropolitanDivision, ref metropolitanPointsToWin);
-				RecordResults(pacificDivision, ref pacificPointsToWin);
-				RecordResults(centralDivision, ref centralPointsToWin);
-
-				foreach (Team team in pacificDivision)
+				// Play every team in both divisions of the other conference - 16 games
+				for (int m = 0; m < metropolitanDivision.Count; m++)
 				{
-					team.Reset();
+					PlayGames(centralDivision[i], atlanticDivision[m]);
+					PlayGames(centralDivision[i], metropolitanDivision[m]);
 				}
-				foreach (Team team in centralDivision)
-				{
-					team.Reset();
-				}
-				foreach (Team team in metropolitanDivision)
-				{
-					team.Reset();
-				}
-				foreach (Team team in atlanticDivision)
-				{
-					team.Reset();
-				}
-				Console.WriteLine("Trial " + counter + " Shutouts: " + shutouts);
-				shutouts = 0;
 			}
-			atlanticDivision.Sort((y, x) => x.FirstPlaceFinishes.CompareTo(y.FirstPlaceFinishes));
-			metropolitanDivision.Sort((y, x) => x.FirstPlaceFinishes.CompareTo(y.FirstPlaceFinishes));
-			pacificDivision.Sort((y, x) => x.FirstPlaceFinishes.CompareTo(y.FirstPlaceFinishes));
-			centralDivision.Sort((y, x) => x.FirstPlaceFinishes.CompareTo(y.FirstPlaceFinishes));
-
-			
-			atlanticPointsToWin = atlanticPointsToWin / trials;
-			metropolitanPointsToWin = metropolitanPointsToWin / trials;
-			pacificPointsToWin = pacificPointsToWin / trials;
-			centralPointsToWin = centralPointsToWin / trials;
-
-			/*
-			#region Display Results
-			// Display standing headers
-			Console.WriteLine($"{"Atlantic",-12}{"1st",16}{"2nd",8}{"3rd",8}{"Mean",8}");
-
-			// Loop through division to display standings
-			foreach (Team team in atlanticDivision)
-			{
-				Console.WriteLine($"{team.Name,-21}{team.FirstPlaceFinishes,7}{team.SecondPlaceFinishes,8}" +
-					$"{team.ThirdPlaceFinishes,8}{atlanticPointsToWin,10}");
-			}
-			Console.WriteLine();
-
-			// Display standing headers
-			Console.WriteLine($"{"Metropolitan",-12}{"1st",16}{"2nd",8}{"3rd",8}{"Mean",8}");
-
-			// Loop through division to display standings
-			foreach (Team team in metropolitanDivision)
-			{
-				Console.WriteLine($"{team.Name,-21}{team.FirstPlaceFinishes,7}{team.SecondPlaceFinishes,8}" +
-					$"{team.ThirdPlaceFinishes,8}{metropolitanPointsToWin,10}");
-			}
-			Console.WriteLine();
-
-			// Display standing headers
-			Console.WriteLine($"{"Pacific",-12}{"1st",16}{"2nd",8}{"3rd",8}{"Mean",8}");
-
-			// Loop through division to display standings
-			foreach (Team team in pacificDivision)
-			{
-				Console.WriteLine($"{team.Name,-21}{team.FirstPlaceFinishes,7}{team.SecondPlaceFinishes,8}" +
-					$"{team.ThirdPlaceFinishes,8}{pacificPointsToWin,10}");
-			}
-			Console.WriteLine();
-
-			// Display standing headers
-			Console.WriteLine($"{"Central",-12}{"1st",16}{"2nd",8}{"3rd",8}{"Mean",8}");
-
-			// Loop through Central division to display standings
-			foreach (Team team in centralDivision)
-			{
-				Console.WriteLine($"{team.Name,-21}{team.FirstPlaceFinishes,7}{team.SecondPlaceFinishes,8}" +
-					$"{team.ThirdPlaceFinishes,8}{centralPointsToWin,10}");
-			}
-			Console.WriteLine();
 			#endregion
-			/*
-			#region Display Standings
+
+			// Sort divisions by total points
+			atlanticDivision.Sort((y, x) => x.Points.CompareTo(y.Points));
+			metropolitanDivision.Sort((y, x) => x.Points.CompareTo(y.Points));
+			pacificDivision.Sort((y, x) => x.Points.CompareTo(y.Points));
+			centralDivision.Sort((y, x) => x.Points.CompareTo(y.Points));
+
+			#region Display End of Season Standings
 			// Display standing headers
 			Console.WriteLine($"{"Atlantic",-12}{"GP",12}{"W",4}{"L",4}{"OTL",5}{"PTS",5}{"GF",4}{"GA",4}");
 
@@ -343,7 +251,8 @@ namespace HockeyStats
 			foreach (Team team in atlanticDivision)
 			{
 				Console.WriteLine($"{team.Name,-21}{team.Wins + team.Losses + team.OvertimeLosses,3}{team.Wins,4}" +
-					$"{team.Losses,4}{team.OvertimeLosses,5}{team.Points,5}{team.GoalsFor,4}{team.GoalsAgainst,4}{team.homeGames + " H",10}{team.awayGames + " A",10}");
+					$"{team.Losses,4}{team.OvertimeLosses,5}{team.Points,5}{team.GoalsFor,4}{team.GoalsAgainst,4}" +
+					$"{team.homeGames + " H",10}{team.awayGames + " A",10}");
 			}
 			Console.WriteLine();
 
@@ -354,18 +263,8 @@ namespace HockeyStats
 			foreach (Team team in metropolitanDivision)
 			{
 				Console.WriteLine($"{team.Name,-21}{team.Wins + team.Losses + team.OvertimeLosses,3}{team.Wins,4}" +
-					$"{team.Losses,4}{team.OvertimeLosses,5}{team.Points,5}{team.GoalsFor,4}{team.GoalsAgainst,4}{team.homeGames + " H",10}{team.awayGames + " A",10}");
-			}
-			Console.WriteLine();
-
-			// Display standing headers
-			Console.WriteLine($"{"Pacific",-12}{"GP",12}{"W",4}{"L",4}{"OTL",5}{"PTS",5}{"GF",4}{"GA",4}");
-
-			// Loop through division to display standings
-			foreach (Team team in pacificDivision)
-			{
-				Console.WriteLine($"{team.Name, -21}{team.Wins + team.Losses + team.OvertimeLosses, 3}{team.Wins, 4}" +
-					$"{team.Losses, 4}{team.OvertimeLosses, 5}{team.Points, 5}{team.GoalsFor, 4}{team.GoalsAgainst, 4}{team.homeGames + " H",10}{team.awayGames + " A",10}");
+					$"{team.Losses,4}{team.OvertimeLosses,5}{team.Points,5}{team.GoalsFor,4}{team.GoalsAgainst,4}" +
+					$"{team.homeGames + " H",10}{team.awayGames + " A",10}");
 			}
 			Console.WriteLine();
 
@@ -375,12 +274,102 @@ namespace HockeyStats
 			// Loop through Central division to display standings
 			foreach (Team team in centralDivision)
 			{
-				Console.WriteLine($"{team.Name, -21}{team.Wins + team.Losses + team.OvertimeLosses, 3}{team.Wins, 4}" +
-					$"{team.Losses, 4}{team.OvertimeLosses, 5}{team.Points, 5}{team.GoalsFor, 4}{team.GoalsAgainst, 4}{team.homeGames + " H",10}{team.awayGames + " A",10}");
+				Console.WriteLine($"{team.Name,-21}{team.Wins + team.Losses + team.OvertimeLosses,3}{team.Wins,4}" +
+					$"{team.Losses,4}{team.OvertimeLosses,5}{team.Points,5}{team.GoalsFor,4}{team.GoalsAgainst,4}" +
+					$"{team.homeGames + " H",10}{team.awayGames + " A",10}");
+			}
+			Console.WriteLine();
+
+			// Display standing headers
+			Console.WriteLine($"{"Pacific",-12}{"GP",12}{"W",4}{"L",4}{"OTL",5}{"PTS",5}{"GF",4}{"GA",4}");
+
+			// Loop through division to display standings
+			foreach (Team team in pacificDivision)
+			{
+				Console.WriteLine($"{team.Name,-21}{team.Wins + team.Losses + team.OvertimeLosses,3}{team.Wins,4}" +
+					$"{team.Losses,4}{team.OvertimeLosses,5}{team.Points,5}{team.GoalsFor,4}{team.GoalsAgainst,4}" +
+					$"{team.homeGames + " H",10}{team.awayGames + " A",10}");
 			}
 			Console.WriteLine();
 			#endregion
-			*/
+
+			#region Playoffs
+
+			// Top 3 teams in each division advance to Playoffs
+			List<Team> easternUpper = new List<Team>
+			{
+				new Team(atlanticDivision[0]),
+				new Team(atlanticDivision[1]),
+				new Team(atlanticDivision[2])
+			};
+			List<Team> easternLower = new List<Team>
+			{
+				new Team(metropolitanDivision[0]),
+				new Team(metropolitanDivision[1]),
+				new Team(metropolitanDivision[2])
+			};
+			List<Team> westernUpper = new List<Team>
+			{
+				new Team(centralDivision[0]),
+				new Team(centralDivision[1]),
+				new Team(centralDivision[2])
+			};
+			List<Team> westernLower = new List<Team>
+			{
+				new Team(pacificDivision[0]),
+				new Team(pacificDivision[1]),
+				new Team(pacificDivision[2])
+			};
+
+			easternUpper.Add(new Team(atlanticDivision[4]));
+
+			Console.WriteLine(Year + "-" + (Year + 1) + " Stanley Cup Playoffs");
+			Console.WriteLine("\nEastern Conference");
+			for (int i = 0; i < easternUpper.Count; i++)
+			{
+				Console.WriteLine(i + 1 + ". " + easternUpper[i].Name);
+			}
+			Console.WriteLine();
+			for (int i = 0; i < easternLower.Count; i++)
+			{
+				Console.WriteLine(i + 1 + ". " + easternLower[i].Name);
+			}
+
+			Console.WriteLine("\nWestern Conference");
+			for (int i = 0; i < westernUpper.Count; i++)
+			{
+				Console.WriteLine(i + 1 + ". " + westernUpper[i].Name);
+			}
+			Console.WriteLine();
+			for (int i = 0; i < westernLower.Count; i++)
+			{
+				Console.WriteLine(i + 1 + ". " + westernLower[i].Name);
+			}
+
+			// Quarterfinals
+			PlaySeries(easternUpper[0], easternUpper[3]);
+			PlaySeries(easternLower[0], easternLower[3]);
+			PlaySeries(westernUpper[0], westernUpper[3]);
+			PlaySeries(westernLower[0], westernLower[3]);
+			PlaySeries(easternUpper[1], easternUpper[2]);
+			PlaySeries(easternLower[1], easternLower[2]);
+			PlaySeries(westernUpper[1], westernUpper[2]);
+			PlaySeries(westernLower[1], westernLower[2]);
+			
+			// Semifinals
+			PlaySeries(easternUpper[0], easternUpper[1]);
+			PlaySeries(easternLower[0], easternLower[1]);
+			PlaySeries(westernUpper[0], westernUpper[1]);
+			PlaySeries(westernLower[0], westernLower[1]);
+			
+			// Conference Finals
+			PlaySeries(easternUpper[0], easternLower[0]);
+			PlaySeries(westernUpper[0], westernLower[0]);
+			
+			// Stanley Cup Finals
+			//PlaySeries();
+			#endregion
+
 			Console.ReadLine();
 		}
 		
@@ -446,17 +435,20 @@ namespace HockeyStats
 					}
 				}
 			}
-			if (homeGoals == 0 || awayGoals == 0)
-				shutouts++;
+
 		}
 
-		// 
-		public static void RecordResults(List<Team> division, ref double pointsToWin)
+		//
+		public static void PlaySeries(Team team1, Team team2)
 		{
-			pointsToWin += division[0].Points;
-			division[0].FirstPlaceFinishes++;
-			division[1].SecondPlaceFinishes++;
-			division[2].ThirdPlaceFinishes++;
+			PlayGames(team1, team2);
+			PlayGames(team1, team2);
+			PlayGames(team2, team1);
+			PlayGames(team2, team1);
+			PlayGames(team1, team2);
+			PlayGames(team2, team1);
+			PlayGames(team1, team2);
+
 		}
 	}
 
@@ -474,16 +466,14 @@ namespace HockeyStats
 		public int Points { get; set; }
 		public int GoalsFor { get; set; }
 		public int GoalsAgainst { get; set; }
-		public int FirstPlaceFinishes { get; set; }
-		public int SecondPlaceFinishes { get; set; }
-		public int ThirdPlaceFinishes { get; set; }
 		public double HomeAttackStrength { get; }
 		public double HomeDefenseStrength { get; }
 		public double AwayAttackStrength { get; }
 		public double AwayDefenseStrength { get; }
 
 		// Constructor
-		public Team(string name, double homeAttackStrength, double homeDefenseStrength, double awayAttackStrength, double awayDefenseStrength)
+		public Team(string name, double homeAttackStrength, double homeDefenseStrength, 
+			double awayAttackStrength, double awayDefenseStrength)
 		{
 			Name = name;
 			HomeAttackStrength = homeAttackStrength;
@@ -497,20 +487,41 @@ namespace HockeyStats
 			Points = 0;
 			GoalsFor = 0;
 			GoalsAgainst = 0;
-
-			FirstPlaceFinishes = 0;
-			SecondPlaceFinishes = 0;
-			ThirdPlaceFinishes = 0;
 		}
 
-		public void Reset()
+		// Copy constructor
+		public Team(Team team)
 		{
-			Wins = 0;
-			Losses = 0;
-			OvertimeLosses = 0;
-			Points = 0;
-			GoalsFor = 0;
-			GoalsAgainst = 0;
+			Name = team.Name;
+			HomeAttackStrength = team.HomeAttackStrength;
+			HomeDefenseStrength = team.HomeDefenseStrength;
+			AwayAttackStrength = team.AwayAttackStrength;
+			AwayDefenseStrength = team.AwayDefenseStrength;
+		}
+
+		public static bool operator >(Team team1, Team team2)
+		{
+			return team1.Points > team2.Points;
+		}
+
+		public static bool operator <(Team team1, Team team2)
+		{
+			return team1.Points < team2.Points;
+		}
+
+		public static bool operator ==(Team team1, Team team2)
+		{
+			return team1.Points == team2.Points;
+		}
+
+		public static bool operator !=(Team team1, Team team2)
+		{
+			return team1.Points != team2.Points;
+		}
+
+		public bool Equals(Team team)
+		{
+			return this.Points == team.Points;
 		}
 	}
 }
